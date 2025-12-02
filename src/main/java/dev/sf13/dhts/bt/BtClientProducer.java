@@ -16,7 +16,7 @@ public class BtClientProducer {
     @ApplicationScoped
     @Startup
     public BtClient createClient() {
-        return Bt.client()
+        BtClient client = Bt.client()
                 .autoLoadModules()
                 .module(new DHTModule(new DHTConfig() {
                     @Override
@@ -26,5 +26,8 @@ public class BtClientProducer {
                 }))
                 .module(new dev.sf13.dhts.bt.DhtModule())
                 .build();
+
+        client.startAsync();
+        return client;
     }
 }
