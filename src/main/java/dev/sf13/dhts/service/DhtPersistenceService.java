@@ -7,6 +7,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Counter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.event.ObservesAsync;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.net.InetAddress;
@@ -27,9 +28,9 @@ public class DhtPersistenceService {
     }
 
     @Transactional
-    public void processAnnounce(@Observes NewAnnounceEvent event) {
+    public void processAnnounce(@ObservesAsync NewAnnounceEvent event) {
         announcesReceived.increment();
-        String hashHex = event.getInfoHash().toString();
+        String hashHex = event.getInfoHashHex();
 
         // Update InfoHashStat
         InfoHashStat stat = InfoHashStat.findById(hashHex);
@@ -43,9 +44,9 @@ public class DhtPersistenceService {
         stat.lastAnnounced = Instant.now();
 
         // Update PeerInfo
-        InetAddress addr = event.getPeer().getInetAddress();
+        InetAddress addr = event.getIp();
         String peerIp = (addr != null) ? addr.getHostAddress() : null;
-        int peerPort = event.getPeer().getPort();
+        int peerPort = event.getPort();
 
         if (peerIp != null) {
             // Check if peer exists for this hash

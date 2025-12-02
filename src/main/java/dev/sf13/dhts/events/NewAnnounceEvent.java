@@ -1,22 +1,27 @@
 package dev.sf13.dhts.events;
 
-import bt.metainfo.TorrentId;
-import bt.net.Peer;
+import java.net.InetAddress;
 
 public class NewAnnounceEvent {
-    private final TorrentId infoHash;
-    private final Peer peer;
+    private final String infoHashHex;
+    private final InetAddress ip;
+    private final int port;
 
-    public NewAnnounceEvent(TorrentId infoHash, Peer peer) {
-        this.infoHash = infoHash;
-        this.peer = peer;
+    public NewAnnounceEvent(String infoHashHex, InetAddress ip, int port) {
+        this.infoHashHex = infoHashHex;
+        this.ip = ip;
+        this.port = port;
     }
 
-    public TorrentId getInfoHash() {
-        return infoHash;
+    public String getInfoHashHex() {
+        return infoHashHex;
     }
 
-    public Peer getPeer() {
-        return peer;
+    public InetAddress getIp() {
+        return ip;
+    }
+
+    public int getPort() {
+        return port;
     }
 }
