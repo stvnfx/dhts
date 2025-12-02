@@ -16,4 +16,5 @@ public class PeerInfo extends PanacheEntity {
     public String ip;
     public int port;
     public Instant lastSeen = Instant.now();
+    public boolean stale = false;
 }

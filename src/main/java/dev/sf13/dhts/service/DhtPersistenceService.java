@@ -58,6 +58,7 @@ public class DhtPersistenceService {
                 peerInfo.persist();
             }
             peerInfo.lastSeen = Instant.now();
+            peerInfo.stale = false;
             peerUpdates.increment();
         }
     }
